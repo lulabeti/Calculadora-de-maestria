@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Maestria</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 2.5em;
+            color: #00ccff;
+        }
+
+        form {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
+            width: 80%; /* Ajustando a largura do formulário */
+            max-width: 350px; /* Definindo uma largura máxima */
+        }
+
+        label, input, select, button {
+            margin: 10px auto; /* Centraliza e adiciona margem igual em cima e embaixo */
+            display: block;
+            width: calc(100% - 20px); /* Ajustando a largura para ter margens iguais */
+            box-sizing: border-box;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #00ccff;
+            color: #ffffff;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #008fb3;
+        }
+
+        #toggle2x {
+            margin-right: 10px;
+            transform: scale(1.5);
+            vertical-align: middle;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #00ff99;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Calculadora de Maestria</h1>
+    
+    <form id="masteryCalculatorForm">
+        <label for="maslevel">Nível de Maestria Atual:</label>
+        <input type="number" id="maslevel" name="maslevel" placeholder="Insira seu nível atual" required>
+
+        <label for="npc">Escolha o NPC:</label>
+        <select id="npc" name="npc" required>
+            <option value="">Selecione o NPC</option>
+            <option value="cakequeen">Cake Queen</option>
+            <option value="longma">Longma</option>
+            <option value="beautifulpirate">Beautiful Pirate</option>
+            <option value="captainelephant">Captain Elephant</option>
+            <option value="kiloadmiral">Kilo Admiral</option>
+            <option value="islandempress">Island Empress</option>
+            <option value="stone">Stone</option>
+        </select>
+
+        <label for="wantedlvl">Nível Desejado:</label>
+        <input type="number" id="wantedlvl" name="wantedlvl" placeholder="Insira o nível desejado" required>
+
+        <!-- Botão de Toggle para ativar/desativar o 2x Mastery -->
+        <label for="toggle2x">
+            <input type="checkbox" id="toggle2x"> 2x Mastery
+        </label>
+
+        <button type="button" onclick="calcularMaestria()">Calcular</button>
+    </form>
+
+    <p id="resultado"></p>
+
+    <script>
+        var npcXP = {
+            "cakequeen": 2200000,
+            "longma": 1500000,
+            "beautifulpirate": 1400000,
+            "captainelephant": 1100000,
+            "kiloadmiral": 1000000,
+            "islandempress": 1000000,
+            "stone": 900000
+        };
+
+        function calcularMaestria() {
+            var maslevel = parseInt(document.getElementById("maslevel").value);
+            var wantedlvl = parseInt(document.getElementById("wantedlvl").value);
+            var npcEscolhido = document.getElementById("npc").value;
+
+            if (!npcEscolhido) {
+                alert("Por favor, selecione um NPC.");
+                return;
+            }
+
+            var npcmasxpgive = npcXP[npcEscolhido];
+            var is2xActive = document.getElementById("toggle2x").checked;
+            if (is2xActive) {
+                npcmasxpgive *= 2;
+            }
+
+            var xpNecessario = 0;
+            var calculo;
+            var npcsNecessarios;
+            var niveis = wantedlvl - maslevel;
+
+            for (var i = 0; i < niveis; i++) {
+                calculo = Math.pow(maslevel, 2.26) + 69;
+                xpNecessario += calculo;
+                maslevel++;
+            }
+
+            npcsNecessarios = Math.ceil(xpNecessario / npcmasxpgive);
+
+            var textoResultado = "Você precisará matar " + npcsNecessarios + " " + npcEscolhido.replace(/([A-Z])/g, ' $1') + "(s) para alcançar o nível " + wantedlvl;
+
+            document.getElementById("resultado").innerHTML = textoResultado;
+        }
+    </script>
+
+</body>
+</html>
